@@ -9,7 +9,7 @@ interface Producto {
 
 interface etiquetaPrintProps{
   productos:Producto,
-  onReady:()=>void
+  onReady?:()=>void
 }
 function drawTextWrap(
   ctx: CanvasRenderingContext2D,

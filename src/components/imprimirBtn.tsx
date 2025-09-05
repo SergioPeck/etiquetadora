@@ -14,7 +14,7 @@ export function ImprimirBoton({productos, mandarImprimir}:ImprimirBtnProps){
 
     return(
         <>
-            <button onClick={mandarImprimir} disabled={!habilitado} className="bg-green-500 text-white hover:bg-green-600 p-2 rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50">Imprimir</button>
+            <button onClick={mandarImprimir} disabled={!habilitado} className="bg-green-500 text-white hover:bg-green-600 py-2 px-4 rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50">🖨️ Imprimir</button>
         </>
     )
 }

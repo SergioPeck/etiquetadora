@@ -9,21 +9,36 @@ interface Producto{
 }
 
 interface mostrarProductosProps{
-    productos:Producto[],
+    productos: Producto[],
     onCantidadChange: (indice: number, cantidad: number) => void,
     onDelete: (indice: number) => void;
     mandarImprimir:()=>void
+    generarPDF?: ()=>void
 }
+
 const btnInput ="w-10 h-10 flex items-center text-2xl pb-[4px] justify-center border border-gray-300 rounded-full hover:cursor-pointer  hover:bg-gray-100"
-export function MostrarProductos({productos,onCantidadChange, onDelete, mandarImprimir}:mostrarProductosProps){
+export function MostrarProductos({productos,onCantidadChange, onDelete, mandarImprimir, generarPDF}:mostrarProductosProps){
     
     const [indiceABorrer, setIndiceABorrar]=useState<number | null>(null)
 
+    const habilitado = productos.some((p)=>p.cantidad>0)
+
     return(
         <div className="flex flex-col mx-auto px-4 border border-gray-300 my-8 shadow-xl rounded-xl w-10/12 pb-8">
-            <div className="flex flex-row justify-between align-middle mt-4">
+            <div className="flex flex-col items-center gap-4 sm:gap-0 sm:items-start sm:flex-row justify-between align-middle mt-4">
                 <h4 className="font-bold text-2xl ">Productos</h4>
-                <ImprimirBoton mandarImprimir={mandarImprimir} productos={productos}/>
+                <div>
+                    {generarPDF && (
+                        <button
+                        onClick={generarPDF}
+                        disabled={!habilitado}
+                        className="disabled:cursor-not-allowed disabled:opacity-50 ml-2 px-4 py-2 bg-red-500 text-white hover:bg-red-600 hover:cursor-pointer rounded-full mx-2"
+                        >
+                        Generar PDF
+                        </button>
+                    )}
+                    <ImprimirBoton mandarImprimir={mandarImprimir} productos={productos}/>
+                </div>
             </div>
             {productos.map((producto:Producto, i:number) => (
                 <div key={i} className="mt-4">
