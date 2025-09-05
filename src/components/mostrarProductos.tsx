@@ -12,9 +12,10 @@ interface mostrarProductosProps{
     productos:Producto[],
     onCantidadChange: (indice: number, cantidad: number) => void,
     onDelete: (indice: number) => void;
+    mandarImprimir:()=>void
 }
 const btnInput ="w-10 h-10 flex items-center text-2xl pb-[4px] justify-center border border-gray-300 rounded-full hover:cursor-pointer  hover:bg-gray-100"
-export function MostrarProductos({productos,onCantidadChange, onDelete}:mostrarProductosProps){
+export function MostrarProductos({productos,onCantidadChange, onDelete, mandarImprimir}:mostrarProductosProps){
     
     const [indiceABorrer, setIndiceABorrar]=useState<number | null>(null)
 
@@ -22,7 +23,7 @@ export function MostrarProductos({productos,onCantidadChange, onDelete}:mostrarP
         <div className="flex flex-col mx-auto px-4 border border-gray-300 my-8 shadow-xl rounded-xl w-10/12 pb-8">
             <div className="flex flex-row justify-between align-middle mt-4">
                 <h4 className="font-bold text-2xl ">Productos</h4>
-                <ImprimirBoton productos={productos}/>
+                <ImprimirBoton mandarImprimir={mandarImprimir} productos={productos}/>
             </div>
             {productos.map((producto:Producto, i:number) => (
                 <div key={i} className="mt-4">
