@@ -36,7 +36,7 @@ function App() {
   };
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename='/etiquetadora'>
         <Routes>
           <Route path="/" element={
             <>
