@@ -1,0 +1,16 @@
+@media print {
+  @page {
+    size: A4 landscape; /* horizontal */
+    margin: 0; /* sin márgenes */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  canvas {
+    page-break-inside: avoid;
+    display: block;
+  }
+}
