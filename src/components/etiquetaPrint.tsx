@@ -68,9 +68,10 @@ export function EtiquetaPrint({ productos, onReady }: etiquetaPrintProps) {
       canvas.width = targetWidth
       canvas.height = targetHeight
 
-      // Aplicar estilos CSS para mostrar en el tamaño correcto
-      canvas.style.width = '4.7cm'
-      canvas.style.height = '4.7cm'
+      // Estilo solo con height fijo
+      canvas.style.height = "4.7cm"
+      canvas.style.width = `${(targetWidth / targetHeight) * 4.7}cm`
+
 
       // dibujar imagen escalada
       ctx.drawImage(img, 0, 0, targetWidth, imageHeight)
