@@ -60,7 +60,6 @@ export function EtiquetaPrint({ productos, onReady }: etiquetaPrintProps) {
 
       // alto total deseado 4,7 cm
       const targetHeight = cmToPx(4.7)
-
       const fullOriginalHeight = img.height + 39
       const scale = targetHeight / fullOriginalHeight
       const targetWidth = img.width * scale
@@ -68,6 +67,10 @@ export function EtiquetaPrint({ productos, onReady }: etiquetaPrintProps) {
 
       canvas.width = targetWidth
       canvas.height = targetHeight
+
+      // Aplicar estilos CSS para mostrar en el tamaño correcto
+      canvas.style.width = '4.7cm'
+      canvas.style.height = '4.7cm'
 
       // dibujar imagen escalada
       ctx.drawImage(img, 0, 0, targetWidth, imageHeight)
@@ -98,6 +101,11 @@ export function EtiquetaPrint({ productos, onReady }: etiquetaPrintProps) {
   }, [productos, onReady])
 
   return (
-    <canvas ref={canvasRef} style={{ border: '1px solid #ccc' }} />
+    <canvas 
+      ref={canvasRef} 
+      style={{ 
+        border: '1px solid #ccc'
+      }} 
+    />
   )
 }
