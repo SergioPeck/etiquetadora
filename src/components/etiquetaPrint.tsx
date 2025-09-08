@@ -7,10 +7,11 @@ interface Producto {
   cantidad: number
 }
 
-interface etiquetaPrintProps{
-  productos:Producto,
-  onReady?:()=>void
+interface etiquetaPrintProps {
+  productos: Producto,
+  onReady?: () => void
 }
+
 function drawTextWrap(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -38,7 +39,7 @@ function drawTextWrap(
   ctx.fillText(line, x, y);
 }
 
-export function EtiquetaPrint({ productos,onReady }: etiquetaPrintProps) {
+export function EtiquetaPrint({ productos, onReady }: etiquetaPrintProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const renderedRef = useRef(false)
 
@@ -50,35 +51,53 @@ export function EtiquetaPrint({ productos,onReady }: etiquetaPrintProps) {
     if (!ctx) return
 
     const img = new Image()
-    img.src = imgBase
+    img.src = imgBase // 268x158
 
     img.onload = () => {
-        // usar el tamaño original de la imagen + espacio extra abajo
-        let espacioDebajo = 39
-        canvas.width = img.width
-        canvas.height = img.height + espacioDebajo
+      // DPI 300
+      const DPI = 300
+      const cmToPx = (cm: number) => cm * DPI / 2.54
 
-        ctx.drawImage(img, 0, 0)
+      // alto total deseado 4,7 cm
+      const targetHeight = cmToPx(4.7)
 
-        ctx.fillStyle = 'black'
-        ctx.textAlign = "center"
-        ctx.font = "bold 20px Arial"
-        ctx.fillText(productos.nombre, canvas.width / 2, 115)
+      const fullOriginalHeight = img.height + 39
+      const scale = targetHeight / fullOriginalHeight
+      const targetWidth = img.width * scale
+      const imageHeight = img.height * scale
 
-        ctx.fillStyle = "black"
-        ctx.textAlign = "start"
-        ctx.font = "12px Arial"
-        drawTextWrap(ctx, "contiene: " + productos.contenido, 10, img.height + 8 , canvas.width - 20, 10);
+      canvas.width = targetWidth
+      canvas.height = targetHeight
 
-        if(!renderedRef.current){
-          renderedRef.current=true
-          onReady?.()
-        }
-        } 
-    }, [productos,onReady])
+      // dibujar imagen escalada
+      ctx.drawImage(img, 0, 0, targetWidth, imageHeight)
+
+      // texto
+      ctx.fillStyle = 'black'
+      ctx.textAlign = "center"
+      ctx.font = `${20 * scale}px Arial`
+      ctx.fillText(productos.nombre, targetWidth / 2, 115 * scale)
+
+      ctx.fillStyle = "black"
+      ctx.textAlign = "start"
+      ctx.font = `${12 * scale}px Arial`
+      drawTextWrap(
+        ctx,
+        "contiene: " + productos.contenido,
+        10 * scale,
+        imageHeight + (8 * scale),
+        targetWidth - (20 * scale),
+        10 * scale
+      )
+
+      if (!renderedRef.current) {
+        renderedRef.current = true
+        onReady?.()
+      }
+    }
+  }, [productos, onReady])
 
   return (
-    <canvas ref={canvasRef} style={{ border: '1px solid #ccc' }}>
-    </canvas>
+    <canvas ref={canvasRef} style={{ border: '1px solid #ccc' }} />
   )
 }
